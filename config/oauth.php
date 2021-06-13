@@ -63,5 +63,10 @@ return [
         'client_id'     => env('OSCHINA_CLIENT_ID', ''),
         'redirect_uri'  => env('OSCHINA_CALLBACK', ''),
         'client_secret' => env('OSCHINA_SECRET', ''),
+    ],
+    'aliyun'        => [
+        'client_id'     => env('OSCHINA_CLIENT_ID', '4765621023575894188'),
+        'redirect_uri'  => env('OSCHINA_CALLBACK', 'http://3646x08n70.zicp.vip/test/Web/aliyuncallback.php'),
+        'client_secret' => env('OSCHINA_SECRET', 'cuFdAXS5RXeEH8bgfjq19QndiJe4zeKpy4tRI7WmChF6XUfEDBsWbVIrnMHnFnji'),
     ]
 ];

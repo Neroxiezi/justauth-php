@@ -25,6 +25,7 @@ class AuthDefaultSource
     public $oschina;
     public $stackoverflow;
     public $dingtalk;
+    public $aliyun;
 
     public function __construct()
     {
@@ -243,6 +244,22 @@ class AuthDefaultSource
             public function getPersistentCode(): string
             {
                 return "https://oapi.dingtalk.com/sns/get_persistent_code";
+            }
+        };
+        $this->aliyun        = new class extends AuthSource {
+            public function authorize(): string
+            {
+                return "https://signin.aliyun.com/oauth2/v1/auth";
+            }
+
+            public function accessToken(): string
+            {
+                return "https://oauth.aliyun.com/v1/token";
+            }
+
+            public function userInfo(): string
+            {
+                return "https://oauth.aliyun.com/v1/userinfo";
             }
         };
 

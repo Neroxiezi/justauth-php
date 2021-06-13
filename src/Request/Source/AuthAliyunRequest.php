@@ -1,15 +1,13 @@
 <?php
-/**
- * @author pfinal南丞
- * @date 2021年06月07日 下午2:56
- */
+
 
 namespace JustAuth\Request\Source;
+
 
 use pf\request\Request;
 use JustAuth\Exception\AuthException;
 
-class AuthBaiduRequest extends AuthCommonRequest
+class AuthAliyunRequest extends AuthCommonRequest
 {
     /**
      *  获取授权跳转 执行重定向
@@ -21,7 +19,7 @@ class AuthBaiduRequest extends AuthCommonRequest
             'response_type' => 'code',
             'client_id'     => $this->config['client_id'],
             'redirect_uri'  => $this->config['redirect_uri'],
-            'display'       => 'popup'
+            #'prompt'        => $this->config['prompt'] ?: 'admin_consent'
         ]);
         $url      = $auth_url . '?' . http_build_query($query);
         header('Location:' . $url);
@@ -39,18 +37,18 @@ class AuthBaiduRequest extends AuthCommonRequest
             'redirect_uri'  => $this->config['redirect_uri'],
         ]);
         try {
-            return $this->http->request('POST', $token_url, [
+            $result = $this->http->request('POST', $token_url, [
                 'query' => $query,
-            ])->getBody()->getContents();
-        } catch (\Throwable $throwable) {
-            throw new AuthException($throwable->getCode(), $throwable->getMessage());
+            ]);
+            return $result->getBody()->getContents();
+        } catch (\Exception $e) {
+            throw new AuthException($e->getCode(), $e->getMessage());
         }
-
     }
 
     public function getUserInfo($access_token)
     {
-        $access_data   = json_decode($access_token);
+        $access_data = json_decode($access_token);
         $user_info_url = $this->source_url->userInfo();
         $query         = array_filter([
             'access_token' => $access_data->access_token
